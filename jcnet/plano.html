@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contratar Plano - JCNet</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      line-height: 1.6;
+      background: #f5f7fa;
+      color: #333;
+    }
+    header {
+      background: linear-gradient(90deg, #0a4fff, #0072ff);
+      color: white;
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
+
+    header img { height: 100px;   width: auto;  }
+
+    .hero {
+      background: linear-gradient(to right, #0a4fff, #0072ff);
+      color: white;
+      text-align: center;
+      padding: 80px 20px;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 15px;
+    }
+    .hero p {
+      font-size: 1.2rem;
+      opacity: 0.9;
+    }
+    .container {
+      max-width: 1000px;
+      margin: 40px auto;
+      padding: 20px;
+    }
+    .plano-card {
+      background: white;
+      padding: 40px;
+      border-radius: 15px;
+      text-align: center;
+      box-shadow: 0 6px 16px rgba(0,0,0,0.1);
+      margin-bottom: 40px;
+    }
+    .plano-card h2 {
+      font-size: 2rem;
+      margin-bottom: 10px;
+      color: #0a4fff;
+    }
+    .price {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #0a4fff;
+      margin: 20px 0;
+    }
+    .beneficios {
+      text-align: left;
+      margin: 30px auto;
+      max-width: 600px;
+    }
+    .beneficios li {
+      margin-bottom: 12px;
+      font-size: 1.1rem;
+      list-style: none;
+      display: flex;
+      align-items: center;
+    }
+    .beneficios li::before {
+      content: "✔️";
+      margin-right: 10px;
+      color: #0a4fff;
+    }
+    .btn {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 14px 28px;
+      background: #0a4fff;
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      transition: 0.3s;
+      font-size: 1.1rem;
+    }
+    .btn:hover {
+      background: #ffdd00;
+      color: #000;
+    }
+    .faq {
+      margin-top: 50px;
+    }
+    .faq h3 {
+      text-align: center;
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+    .faq-item {
+      background: white;
+      padding: 20px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    }
+    .faq-item h4 {
+      color: #0a4fff;
+      margin-bottom: 10px;
+    }
+    footer {
+      text-align: center;
+      padding: 20px;
+      background: #111;
+      color: #bbb;
+      margin-top: 40px;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <img src="LOGO_JC_NET-removebg-preview.png"/>
+  </header>
+
+  <section class="hero">
+    <h1>Plano X Mega</h1>
+    <p>Perfeito para famílias, home office e gamers. Conexão estável e de alta velocidade.</p>
+  </section>
+
+  <div class="container">
+    <div class="plano-card">
+      <h2>Plano X Mega</h2>
+      <p class="price">R$ 0,00/mês</p>
+
+      <ul class="beneficios">
+        <li>Conexão 100% Fibra Óptica</li>
+        <li>Velocidade de download até 150 Mbps</li>
+        <li>Upload estável para chamadas de vídeo e jogos</li>
+        <li>Instalação grátis</li>
+        <li>Wi-Fi incluso</li>
+        <li>Suporte técnico 24h</li>
+      </ul>
+
+      <a href="https://wa.me/550000000000?text=Quero contratar o plano 150 Mega" target="_blank" class="btn">
+        💬 Contratar
+      </a>
+      <br>
+      <a href="index.html" class="btn">⬅ Voltar</a>
+    </div>
+
+    <div class="faq">
+      <h3>Perguntas Frequentes</h3>
+      <div class="faq-item">
+        <h4>Quanto tempo demora a instalação?</h4>
+        <p>Normalmente em até 48h após a contratação, dependendo da região.</p>
+      </div>
+      <div class="faq-item">
+        <h4>O Wi-Fi está incluso?</h4>
+        <p>Sim! Você recebe o roteador Wi-Fi sem custo adicional.</p>
+      </div>
+      <div class="faq-item">
+        <h4>O suporte é 24h mesmo?</h4>
+        <p>Exatamente. Nossa equipe está disponível todos os dias, a qualquer hora.</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>© <span id="year"></span> JCNet - Todos os direitos reservados</p>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
