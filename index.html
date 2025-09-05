@@ -1,0 +1,506 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JCNet - Provedor de Internet</title>
+
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Montserrat:wght@600;800&display=swap" rel="stylesheet">
+
+<style>
+/* Reset */
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Roboto', sans-serif; line-height:1.6; background:#f9f9f9; color:#333; scroll-behavior:smooth; }
+a { text-decoration:none; }
+
+/* Navbar */
+header {
+  position:fixed; top:0; left:0; right:0;
+  background:rgba(10,79,255,0.95);
+  display:flex; justify-content:space-between; align-items:center;
+  padding:12px 50px; z-index:1000; transition:0.3s;
+}
+header.scrolled { background:#0a4fff; box-shadow:0 3px 10px rgba(0,0,0,0.2);}
+header .logo img { height:75px; }
+nav a { color:white; margin-left:25px; font-weight:600; transition:0.3s; font-size:0.95rem; }
+nav a:hover { color:#ffdd00; }
+
+/* Hero Carrossel */
+.hero-carousel {
+  position: relative;
+  height: 90vh;
+  overflow: hidden;
+}
+.carousel-slide {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background-size: cover;
+  background-position: center;
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+.carousel-slide.active { opacity: 1; }
+
+.carousel-content {
+  position: absolute;
+  top: 50%; left: 50%;
+  transform: translate(-50%, -50%);
+  color: white;
+  text-align: center;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.6);
+  max-width: 800px;
+  padding: 20px;
+}
+.carousel-content h1 {
+  font-size: 3rem;
+  font-family: 'Montserrat', sans-serif;
+  margin-bottom: 15px;
+}
+.carousel-content p {
+  font-size: 1.3rem;
+  margin-bottom: 25px;
+}
+.carousel-content .btn {
+  display:inline-block;
+  padding:14px 32px;
+  border-radius:30px;
+  font-weight:700;
+  margin:6px;
+  transition:0.3s;
+}
+.carousel-content .btn-primary { background:#ffdd00; color:#000; }
+.carousel-content .btn-secondary { background:white; color:#0a4fff; }
+.carousel-content .btn:hover { transform:scale(1.05); }
+
+/* Barra de Progresso */
+.carousel-progress {
+  position: absolute;
+  bottom: 20px; left: 50%;
+  transform: translateX(-50%);
+  width: 80%; height: 6px;
+  background: rgba(255,255,255,0.4);
+  border-radius: 3px;
+  overflow: hidden;
+  z-index: 10;
+}
+.carousel-progress-bar {
+  width: 0%;
+  height: 100%;
+  background: #ffdd00;
+}
+
+/* Sections */
+.section { padding:50px 20px; max-width:1200px; margin:auto; }
+.section h2 { text-align:center; font-family:'Montserrat', sans-serif; font-size:2.5rem; margin-bottom:40px; color:#0a4fff; font-weight:800; }
+
+/* Alternar cores */
+.bg-light { background:#f9f9f9; }
+.bg-white { background:#fff; }
+.bg-dark { background:#0a4fff; color:white; }
+
+/* Vantagens */
+.vantagens { display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:30px; }
+.vantagem-card { background:white; border-radius:16px; padding:40px 25px; text-align:center; box-shadow:0 8px 18px rgba(0,0,0,0.08); transition:0.3s; }
+.vantagem-card:hover { transform:translateY(-8px); box-shadow:0 12px 28px rgba(0,0,0,0.15); }
+.vantagem-card h3 { font-size:1.3rem; margin-bottom:15px; color:#0a4fff; font-weight:700; }
+
+/* Planos Premium */
+.planos {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 35px;
+  align-items: stretch;
+}
+
+.plano-card {
+  background: white;
+  border-radius: 18px;
+  padding: 40px 30px;
+  text-align: center;
+  box-shadow: 0 8px 22px rgba(0,0,0,0.12);
+  transition: 0.3s;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.plano-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.18);
+}
+
+.plano-card.recomendado {
+  border: 3px solid #0a4fff;
+  transform: scale(1.05);
+}
+
+.plano-header {
+  margin-bottom: 20px;
+}
+
+.plano-header h3 {
+  font-size: 1.6rem;
+  color: #0a4fff;
+  font-weight: 700;
+}
+
+.badge {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 6px 14px;
+  background: #eee;
+  color: #555;
+  font-size: 0.85rem;
+  border-radius: 20px;
+  font-weight: 600;
+}
+
+.badge.destaque {
+  background: #ffdd00;
+  color: #000;
+}
+
+.price {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #0a4fff;
+  margin: 20px 0;
+}
+
+.beneficios {
+  list-style: none;
+  padding: 0;
+  margin: 20px 0 30px;
+  text-align: left;
+}
+.beneficios li {
+  margin: 12px 0;
+  font-size: 1rem;
+  color: #444;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.plano-card .btn {
+  background: #0a4fff;
+  color: white;
+  padding: 14px 28px;
+  border-radius: 25px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: 0.3s;
+}
+.plano-card .btn:hover {
+  background: #ffdd00;
+  color: #000;
+}
+
+.plano-card.recomendado .btn-destaque {
+  background: #ffdd00;
+  color: #000;
+}
+.plano-card.recomendado .btn-destaque:hover {
+  background: #0a4fff;
+  color: #fff;
+}
+
+/* Depoimentos */
+.depoimentos-carousel {
+  width: 100vw;
+  max-width: 100%;
+  margin: 0 auto;
+  text-align: center;
+  padding: 40px 0;
+  background: #0a4fff; /* cor de fundo da seção */
+}
+
+.depoimento {
+  display: none;
+  background: white;
+  color: #333;
+  padding: 40px 30px;
+  border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.depoimento.active { display: block; }
+
+.depoimento p { font-style: italic; font-size: 1.2rem; margin-bottom: 20px; }
+.depoimento h4 { color:#0a4fff; font-weight:700; }
+
+.carousel-dots { margin-top: 20px; display: flex; justify-content: center; gap: 10px; }
+.carousel-dots span { width: 12px; height: 12px; border-radius: 50%; background: rgba(255,255,255,0.5); cursor: pointer; }
+.carousel-dots span.active { background:#ffdd00; }
+
+/* Mapa */
+.mapa iframe { width:100%; height:400px; border:0; border-radius:20px; }
+
+/* Contato */
+.contato { text-align:center; }
+.contato a { display:inline-block; background:#0a4fff; color:white; padding:12px 28px; border-radius:25px; margin:6px; transition:0.3s; }
+.contato a:hover { background:#ffdd00; color:#000; }
+
+/* Footer */
+footer { background:#111; color:#ccc; padding:60px 20px; }
+.footer-container { max-width:1200px; margin:auto; display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:40px; text-align:left; }
+footer h4 { font-family:'Montserrat', sans-serif; margin-bottom:15px; font-size:1.1rem; color:#fff; }
+footer ul { list-style:none; }
+footer ul li { margin:8px 0; }
+footer ul li a { color:#ccc; transition:0.3s; }
+footer ul li a:hover { color:#ffdd00; }
+footer .copy { text-align:center; margin-top:30px; font-size:0.9rem; }
+
+/* Botão WhatsApp */
+.whatsapp { position:fixed; bottom:30px; right:30px; background:#25D366; color:white; border-radius:50%; width:60px; height:60px; display:flex; justify-content:center; align-items:center; font-size:2rem; box-shadow:0 4px 15px rgba(0,0,0,0.3); z-index:999; transition:0.3s; }
+.whatsapp:hover { transform:scale(1.1); }
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<header>
+  <div class="logo"><img src="LOGO_JC_NET-removebg-preview.png"/></div>
+  <nav>
+    <a href="#vantagens">Vantagens</a>
+    <a href="#planos">Planos</a>
+    <a href="#sobre">Sobre</a>
+    <a href="#depoimentos">Depoimentos</a>
+    <a href="#contato">Contato</a>
+    <a href="https://www.playhub.net.br/?utm_source=google&utm_medium=cpc&utm_campaign=x&utm_content&utm_term&gad_source=1&gad_campaignid=22910006619&gclid=Cj0KCQjw8eTFBhCXARIsAIkiuOzX1f3o23G_3gqCs2_GFy85FYMe8Gpd-T0jZU5h-1WYOpMHNsfBLR4aAlPbEALw_wcB" target="_blank">Playhub</a>
+    <a href="https://ixc.jcnetvm.com.br/central_assinante_web/login" target="_blank">Portal do Cliente</a>
+  </nav>
+</header>
+
+<!-- Hero Carrossel -->
+<section class="hero-carousel">
+  <div class="carousel-slide active" style="background-image:url('https://images.unsplash.com/photo-1521747116042-5a810fda9664?auto=format&fit=crop&w=1920&q=80');">
+    <div class="carousel-content">
+      <h1>Internet rápida e confiável</h1>
+      <p>Conexão de alta velocidade para famílias, empresas e gamers.</p>
+      <a href="#planos" class="btn btn-primary">Conhecer Planos</a>
+      <a href="#contato" class="btn btn-secondary">Contato</a>
+    </div>
+  </div>
+  <div class="carousel-slide" style="background-image:url('https://images.unsplash.com/photo-1525182008055-f88b95ff7980?auto=format&fit=crop&w=1920&q=80');">
+    <div class="carousel-content">
+      <h1>Planos sob medida</h1>
+      <p>Escolha o melhor plano para o seu estilo de vida.</p>
+      <a href="#planos" class="btn btn-primary">Conhecer Planos</a>
+      <a href="#contato" class="btn btn-secondary">Contato</a>
+    </div>
+  </div>
+  <div class="carousel-slide" style="background-image:url('https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80');">
+    <div class="carousel-content">
+      <h1>Suporte 24h</h1>
+      <p>Estamos sempre prontos para te ajudar.</p>
+      <a href="#contato" class="btn btn-secondary">Fale Conosco</a>
+    </div>
+  </div>
+  <!-- Barra de progresso -->
+  <div class="carousel-progress"><div class="carousel-progress-bar"></div></div>
+</section>
+
+<!-- Vantagens -->
+<section class="section bg-white" id="vantagens">
+  <h2>Por que escolher a JCNet?</h2>
+  <div class="vantagens">
+    <div class="vantagem-card"><h3>Velocidade Garantida</h3><p>Internet rápida e estável para streaming, jogos e home office.</p></div>
+    <div class="vantagem-card"><h3>Preço Justo</h3><p>Planos acessíveis sem comprometer a qualidade.</p></div>
+    <div class="vantagem-card"><h3>Suporte 24h</h3><p>Atendimento rápido e eficiente para qualquer problema.</p></div>
+    <div class="vantagem-card"><h3>Cobertura Ampla</h3><p>Disponível nas principais regiões da cidade.</p></div>
+  </div>
+</section>
+
+<!-- Planos -->
+<section class="section bg-light" id="planos">
+  <h2>Nossos Planos</h2>
+  
+  <div class="planos">
+    
+    <!-- Plano 1 -->
+    <div class="plano-card">
+      <div class="plano-header">
+        <h3>50 Mega</h3>
+        <span class="badge">Econômico</span>
+      </div>
+      <div class="price">R$ 79,90/mês</div>
+      <ul class="beneficios">
+        <li> Internet de Fibra Óptica</li>
+        <li> Suporte para Streaming HD</li>
+        <li> Suporte 24/7</li>
+      </ul>
+      <a href="plano.html" class="btn">Assinar Agora</a>
+    </div>
+
+    <!-- Plano 2 (Recomendado) -->
+    <div class="plano-card recomendado">
+      <div class="plano-header">
+        <h3>150 Mega</h3>
+        <span class="badge destaque">Mais Popular</span>
+      </div>
+      <div class="price">R$ 99,90/mês</div>
+      <ul class="beneficios">
+        <li> Internet Ultra-Rápida</li>
+        <li> Perfeito para Gamers</li>
+        <li> Streaming 4K</li>
+        <li> Suporte 24/7 Prioritário</li>
+      </ul>
+      <a href="plano.html" class="btn btn-destaque">Assinar Agora</a>
+    </div>
+
+    <!-- Plano 3 -->
+    <div class="plano-card">
+      <div class="plano-header">
+        <h3>300 Mega</h3>
+        <span class="badge">Família</span>
+      </div>
+      <div class="price">R$ 149,90/mês</div>
+      <ul class="beneficios">
+        <li> Velocidade Premium</li>
+        <li> Ideal para Home Office</li>
+        <li> Suporte Dedicado</li>
+        <li> IP Fixo (opcional)</li>
+      </ul>
+      <a href="plano.html" class="btn">Assinar Agora</a>
+    </div>
+
+  </div>
+</section>
+
+<!-- Sobre -->
+<section class="section bg-white" id="sobre">
+  <h2>Sobre a JCNet</h2>
+  <p style="max-width:800px; margin:auto; text-align:center; font-size:1.1rem;">
+    A JCNet é um provedor regional comprometido em fornecer conexão de qualidade, suporte eficiente e preços justos. Nosso objetivo é conectar pessoas, negócios e sonhos com internet confiável.
+  </p>
+</section>
+
+<!-- Depoimentos -->
+<section class="section bg-dark" id="depoimentos">
+  <h2 style="color:#fff;">O que nossos clientes dizem</h2>
+  <div class="depoimentos-carousel">
+    <div class="depoimento active">
+      <p>"A internet da JCNet nunca me deixa na mão! Super rápido e confiável."</p>
+      <h4>— Antonio do Bolinho</h4>
+    </div>
+    <div class="depoimento">
+      <p>"Excelente suporte técnico, resolveram meu problema em minutos."</p>
+      <h4>— Garibaldo Batatinha</h4>
+    </div>
+    <div class="depoimento">
+      <p>"Ótimo custo-benefício. Recomendo para toda a família."</p>
+      <h4>— Joaozinho Alegre</h4>
+    </div>
+  </div>
+  <div class="carousel-dots"></div>
+</section>
+
+
+<!-- Cobertura -->
+<section class="section bg-light cobertura" id="cobertura">
+  <h2>Área de Cobertura</h2>
+
+   <!-- Mapa -->
+   <div class="mapa">
+    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3656.500000!2d-46.633309!3d-23.550520!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94ce59c94f1b0001%3A0xabcdef123456789!2sSão%20Paulo!5e0!3m2!1spt-BR!2sbr!4v1234567890" allowfullscreen="" loading="lazy"></iframe>
+  </div>
+
+  <!-- Verificação de CEP -->
+  <div class="verifica-cep" style="text-align:center; margin-bottom:30px;">
+    <p>Digite seu CEP para verificar se temos cobertura:</p>
+    <input type="text" id="cepInput" placeholder="Digite seu CEP" maxlength="8" 
+           style="padding:12px; border-radius:8px; border:1px solid #ccc; font-size:1rem; width:200px; text-align:center;">
+    <button onclick="verificarCEP()" 
+            style="padding:12px 20px; border:none; border-radius:8px; background:#0a4fff; color:white; font-weight:600; cursor:pointer; margin-left:8px;">
+      Verificar
+    </button>
+    <p id="cepResultado" style="margin-top:15px; font-weight:600;"></p>
+  </div>
+
+ 
+</section>
+
+<!-- Contato -->
+<section class="section bg-white contato" id="contato">
+  <h2>Entre em contato</h2>
+  <a href="tel:+550000000000">📞 (00) 00000-0000</a>
+  <a href="mailto:contato@jcnet.com">✉️ contato@jcnet.com</a>
+  <a href="https://wa.me/550000000000" target="_blank">💬 WhatsApp</a>
+</section>
+
+<!-- Footer -->
+<footer>
+  <div class="footer-container">
+    <div><h4>Institucional</h4><ul><li><a href="#sobre">Sobre Nós</a></li><li><a href="#planos">Planos</a></li><li><a href="#depoimentos">Depoimentos</a></li></ul></div>
+    <div><h4>Atendimento</h4><ul><li><a href="#contato">Fale Conosco</a></li><li><a href="#">Central de Ajuda</a></li><li><a href="#">Perguntas Frequentes</a></li></ul></div>
+    <div><h4>Redes Sociais</h4><ul><li><a href="#">Facebook</a></li><li><a href="#">Instagram</a></li><li><a href="#">LinkedIn</a></li></ul></div>
+  </div>
+  <p class="copy">© <span id="year"></span> JCNet - Todos os direitos reservados</p>
+</footer>
+
+<!-- WhatsApp -->
+<a href="https://wa.me/550000000000" class="whatsapp" target="_blank">💬</a>
+
+<script>
+// Atualiza ano
+document.getElementById("year").textContent = new Date().getFullYear();
+
+// Navbar scroll
+window.addEventListener("scroll", function() {
+  const header = document.querySelector("header");
+  if(window.scrollY > 50) header.classList.add("scrolled");
+  else header.classList.remove("scrolled");
+});
+
+// Carrossel Hero
+let currentSlide = 0;
+const slides = document.querySelectorAll(".carousel-slide");
+const progressBar = document.querySelector(".carousel-progress-bar");
+const slideInterval = 5000; // 5s
+
+function showSlide(index) {
+  slides.forEach((slide, i) => slide.classList.toggle("active", i === index));
+  progressBar.style.transition = "none";
+  progressBar.style.width = "0%";
+  setTimeout(() => {
+    progressBar.style.transition = `width ${slideInterval}ms linear`;
+    progressBar.style.width = "100%";
+  }, 50);
+}
+function nextSlide() {
+  currentSlide = (currentSlide + 1) % slides.length;
+  showSlide(currentSlide);
+}
+showSlide(currentSlide);
+setInterval(nextSlide, slideInterval);
+
+// Lista de CEPs atendidos
+const cepsAtendidos = ["01000000", "02000000", "03000000", "04000000"];
+
+function verificarCEP() {
+  const cepInput = document.getElementById("cepInput").value.trim();
+  const resultado = document.getElementById("cepResultado");
+
+  if (!cepInput) {
+    resultado.style.color = "red";
+    resultado.textContent = "Por favor, digite um CEP válido.";
+    return;
+  }
+
+  if (cepsAtendidos.includes(cepInput)) {
+    resultado.style.color = "green";
+    resultado.textContent = "✅ Cobertura disponível na sua região!";
+  } else {
+    resultado.style.color = "red";
+    resultado.textContent = "❌ Infelizmente ainda não atendemos esse CEP.";
+  }
+}
+</script>
+
+</body>
+</html>
